@@ -26,5 +26,10 @@ public class LocalizationTest : MonoBehaviour
       {
          Debug.Log(manager.GetSpecificTranslation(key, language));
       }
+
+      if (Input.GetKeyDown(KeyCode.C))
+      {
+         manager.SwitchLanguage(language);
+      }
    }
 }

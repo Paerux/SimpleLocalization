@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Events;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Paerux.Localization
@@ -15,7 +16,8 @@ namespace Paerux.Localization
         public bool translationReady;
         public string currentLanguage = "English";
         public string[] availableLanguages;
-
+        public UnityEvent OnLanguageChange;
+        public UnityEvent OnInitialized;
         private Dictionary<string, Dictionary<string, string>> translationTable;
 
 
@@ -39,6 +41,7 @@ namespace Paerux.Localization
                     {
                         var file = asyncOperationHandle.Result;
                         translationReady = FillDictionary(file);
+                        if(translationReady) OnInitialized?.Invoke();
                     }
                     else
                     {
@@ -64,6 +67,11 @@ namespace Paerux.Localization
                     }
                 }
 
+                var savedLang = PlayerPrefs.GetString("savedLanguage","English");
+                if (!availableLanguages.Contains(savedLang))
+                    savedLang = "English";
+
+                currentLanguage = savedLang;
                 return true;
             }
             catch (Exception e)
@@ -72,7 +80,7 @@ namespace Paerux.Localization
                 return false;
             }
         }
-        
+
         public string GetTranslation(string key)
         {
             if (!translationReady)
@@ -102,6 +110,24 @@ namespace Paerux.Localization
 
             Debug.LogError("Specified language is not available");
             return GetTranslation(key);
+        }
+
+        public void SwitchLanguage(string language)
+        {
+            if (!availableLanguages.Contains(language))
+            {
+                Debug.LogError("Specified language is not available");
+                return;
+            }
+
+            currentLanguage = language;
+            OnLanguageChange?.Invoke();
+        }
+
+        private void OnApplicationQuit()
+        {
+            PlayerPrefs.SetString("savedLanguage",currentLanguage);
+            PlayerPrefs.Save();
         }
     }
 }
