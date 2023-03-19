@@ -1,0 +1,20 @@
+{
+  "available_languages" : ["English","Turkish"],
+
+  "table": [
+    {
+      "key" : "hello",
+      "translations" : [
+        {"language" : "English" , "value" : "hello"},
+        {"language" : "Turkish" , "value" : "merhaba"}
+      ]
+    },
+    {
+      "key" : "exit",
+      "translations" : [
+        {"language" : "English" , "value" : "exit"},
+        {"language" : "Turkish" , "value" : "çıkış"}
+      ]
+    }
+  ]
+}
