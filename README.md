@@ -1,3 +1,3 @@
 Very simple localization system while learning the Addressable system
 
-Few notes to self : Change localizationmanager to a scriptableobject and figure out what to do while waiting initialization asyncoperation instead of returning error text
+Idk if async loading the translation file is the best idea but i thought it would be a good way to learn how to use Addressables
